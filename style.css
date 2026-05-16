@@ -240,6 +240,26 @@ footer {
 
 #dettagli p {
 
+    break-inside: avoid;
     page-break-inside: avoid;
+
+}
+
+.question {
+
+    break-inside: avoid;
+    page-break-inside: avoid;
+
+}
+
+@media print {
+
+    body {
+        background: white;
+    }
+
+    #risultato {
+        box-shadow: none;
+    }
 
 }
