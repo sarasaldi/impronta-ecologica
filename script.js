@@ -123,7 +123,9 @@ async function scaricaPDF() {
         document.getElementById("risultato");
 
     const canvas =
-        await html2canvas(area);
+        await html2canvas(area, {
+            scale: 2
+        });
 
     const imgData =
         canvas.toDataURL("image/png");
@@ -134,24 +136,67 @@ async function scaricaPDF() {
     const pdfWidth =
         pdf.internal.pageSize.getWidth();
 
-    const imgWidth = pdfWidth - 20;
+    const pdfHeight =
+        pdf.internal.pageSize.getHeight();
+
+const oggi = new Date();
+
+pdf.text(
+    oggi.toLocaleDateString(),
+    150,
+    10
+);
+
+    const imgWidth =
+        pdfWidth - 20;
 
     const imgHeight =
         canvas.height * imgWidth / canvas.width;
+
+    let heightLeft =
+        imgHeight;
+
+    let position = 10;
+
+    // Prima pagina
 
     pdf.addImage(
         imgData,
         "PNG",
         10,
-        10,
+        position,
         imgWidth,
         imgHeight
     );
 
+    heightLeft -= pdfHeight;
+
+    // Pagine successive
+
+    while (heightLeft > 0) {
+
+        position =
+            heightLeft - imgHeight + 10;
+
+        pdf.addPage();
+
+        pdf.addImage(
+            imgData,
+            "PNG",
+            10,
+            position,
+            imgWidth,
+            imgHeight
+        );
+
+        heightLeft -= pdfHeight;
+
+    }
+
     let nome =
         document.getElementById("nome").value;
 
-    if(nome.trim() === "") {
+    if (nome.trim() === "") {
         nome = "utente";
     }
 
