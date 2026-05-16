@@ -122,10 +122,13 @@ async function scaricaPDF() {
     const area =
         document.getElementById("risultato");
 
-    const canvas =
-        await html2canvas(area, {
-            scale: 2
-        });
+    // Rendering migliore
+
+    const canvas = await html2canvas(area, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#f8f4e8"
+    });
 
     const imgData =
         canvas.toDataURL("image/png");
@@ -133,59 +136,112 @@ async function scaricaPDF() {
     const pdf =
         new jsPDF("p", "mm", "a4");
 
-    const pdfWidth =
-        pdf.internal.pageSize.getWidth();
+    const pdfWidth = 210;
+    const pdfHeight = 297;
 
-    const pdfHeight =
-        pdf.internal.pageSize.getHeight();
+    const margin = 10;
 
-const oggi = new Date();
-
-pdf.text(
-    oggi.toLocaleDateString(),
-    150,
-    10
-);
-
-    const imgWidth =
-        pdfWidth - 20;
+    const usableWidth =
+        pdfWidth - margin * 2;
 
     const imgHeight =
-        canvas.height * imgWidth / canvas.width;
+        canvas.height * usableWidth / canvas.width;
 
-    let heightLeft =
-        imgHeight;
+    let heightLeft = imgHeight;
 
-    let position = 10;
+    let position = 0;
 
-    // Prima pagina
+    // ===== LOGO =====
+
+    const logo =
+        document.querySelector(".logo");
+
+    if (logo) {
+
+        const logoCanvas =
+            document.createElement("canvas");
+
+        logoCanvas.width = logo.width;
+        logoCanvas.height = logo.height;
+
+        const ctx =
+            logoCanvas.getContext("2d");
+
+        ctx.drawImage(
+            logo,
+            0,
+            0
+        );
+
+        const logoData =
+            logoCanvas.toDataURL("image/png");
+
+        pdf.addImage(
+            logoData,
+            "PNG",
+            15,
+            10,
+            20,
+            20
+        );
+    }
+
+    // ===== TITOLO =====
+
+    pdf.setFont("helvetica", "bold");
+
+    pdf.setFontSize(20);
+
+    pdf.text(
+        "Impronta Ecologica",
+        45,
+        20
+    );
+
+    // ===== DATA =====
+
+    pdf.setFont("helvetica", "normal");
+
+    pdf.setFontSize(11);
+
+    const oggi = new Date();
+
+    pdf.text(
+        oggi.toLocaleDateString("it-IT"),
+        170,
+        20
+    );
+
+    // ===== CONTENUTO =====
+
+    let y = 40;
 
     pdf.addImage(
         imgData,
         "PNG",
-        10,
-        position,
-        imgWidth,
+        margin,
+        y,
+        usableWidth,
         imgHeight
     );
 
-    heightLeft -= pdfHeight;
+    heightLeft -= (pdfHeight - y);
 
-    // Pagine successive
+    // ===== PAGINE SUCCESSIVE =====
 
     while (heightLeft > 0) {
 
         position =
-            heightLeft - imgHeight + 10;
+            heightLeft - imgHeight + y;
 
         pdf.addPage();
 
         pdf.addImage(
             imgData,
             "PNG",
-            10,
+            margin,
             position,
-            imgWidth,
+            usableWidth,
             imgHeight
         );
 
@@ -193,10 +249,12 @@ pdf.text(
 
     }
 
+    // ===== NOME FILE =====
+
     let nome =
         document.getElementById("nome").value;
 
-    if (nome.trim() === "") {
+    if(nome.trim() === "") {
         nome = "utente";
     }
 

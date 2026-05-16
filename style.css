@@ -231,3 +231,15 @@ footer {
     line-height: 1.5;
 
 }
+
+#risultato {
+
+    page-break-inside: avoid;
+
+}
+
+#dettagli p {
+
+    page-break-inside: avoid;
+
+}
