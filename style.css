@@ -170,3 +170,26 @@ footer {
     }
 
 }
+
+.chart-container {
+    width: 300px;
+    margin: 30px auto;
+}
+
+#totale {
+    font-size: 50px;
+    color: #c89b3c;
+    margin-bottom: 10px;
+}
+
+#livello {
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+#dettagli p {
+    background: #f8f4e8;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 10px 0;
+}

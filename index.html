@@ -148,9 +148,27 @@
 
 </form>
 
-<div id="risultato" class="hidden"></div>
+<div id="risultato" class="hidden">
+
+    <h2 id="totale"></h2>
+
+    <div class="chart-container">
+        <canvas id="grafico"></canvas>
+    </div>
+
+    <div id="livello"></div>
+
+    <div id="dettagli"></div>
+
+    <button onclick="scaricaPDF()">
+        Scarica PDF
+    </button>
+
+</div>
 
 <script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 </body>
 </html>
