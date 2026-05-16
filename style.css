@@ -172,8 +172,9 @@ footer {
 }
 
 .chart-container {
-    width: 300px;
-    margin: 30px auto;
+
+    width: 220px;
+
 }
 
 #totale {
@@ -187,12 +188,6 @@ footer {
     margin-bottom: 25px;
 }
 
-#dettagli p {
-    background: #f8f4e8;
-    padding: 12px;
-    border-radius: 10px;
-    margin: 10px 0;
-}
 
 .nome-box {
 
@@ -240,8 +235,9 @@ footer {
 
 #dettagli p {
 
-    break-inside: avoid;
-    page-break-inside: avoid;
+    padding: 6px;
+    margin: 4px 0;
+    font-size: 14px;
 
 }
 

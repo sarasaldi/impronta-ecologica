@@ -115,46 +115,79 @@ let nome =
 
 }
 
-function scaricaPDF() {
+async function scaricaPDF() {
 
-    const nome =
-        document.getElementById("nome").value || "utente";
+    const { jsPDF } = window.jspdf;
 
-    const element =
+    const area =
         document.getElementById("risultato");
 
-    const opt = {
-
-        margin: 10,
-
-        filename:
-            `impronta_ecologica_${nome}.pdf`,
-
-        image: {
-            type: 'jpeg',
-            quality: 1
-        },
-
-        html2canvas: {
+    const canvas =
+        await html2canvas(area, {
             scale: 2,
-            useCORS: true
-        },
+            useCORS: true,
+            backgroundColor: "#ffffff"
+        });
 
-        jsPDF: {
-            unit: 'mm',
-            format: 'a4',
-            orientation: 'portrait'
-        },
+    const imgData =
+        canvas.toDataURL("image/png");
 
-        pagebreak: {
-            mode: ['avoid-all', 'css', 'legacy']
-        }
+    const pdf =
+        new jsPDF("p", "mm", "a4");
 
-    };
+    const pdfWidth =
+        pdf.internal.pageSize.getWidth();
 
-    html2pdf()
-        .set(opt)
-        .from(element)
-        .save();
+    const pdfHeight =
+        pdf.internal.pageSize.getHeight();
+
+    // dimensioni immagine
+
+    const imgWidth =
+        canvas.width;
+
+    const imgHeight =
+        canvas.height;
+
+    // calcolo scala per far entrare tutto
+
+    const ratio = Math.min(
+        (pdfWidth - 20) / imgWidth,
+        (pdfHeight - 20) / imgHeight
+    );
+
+    const finalWidth =
+        imgWidth * ratio;
+
+    const finalHeight =
+        imgHeight * ratio;
+
+    // centrato nella pagina
+
+    const x =
+        (pdfWidth - finalWidth) / 2;
+
+    const y =
+        (pdfHeight - finalHeight) / 2;
+
+    pdf.addImage(
+        imgData,
+        "PNG",
+        x,
+        y,
+        finalWidth,
+        finalHeight
+    );
+
+    let nome =
+        document.getElementById("nome").value;
+
+    if(nome.trim() === "") {
+        nome = "utente";
+    }
+
+    pdf.save(
+        `impronta_ecologica_${nome}.pdf`
+    );
 
 }
