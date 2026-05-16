@@ -3,6 +3,10 @@ function calcola() {
     let totale = 0;
     let dettagliHTML = "";
 
+let nome =
+    document.getElementById("nome").value;
+
+
     let categorie = {
         casa: 0,
         alimentazione: 0,
@@ -58,8 +62,16 @@ function calcola() {
 
     // MOSTRA RISULTATI
 
-    document.getElementById("totale").innerHTML =
-        `${totale} punti`;
+   document.getElementById("totale").innerHTML = `
+    ${nome}, il tuo punteggio è:
+    <br><br>
+    ${totale} punti
+
+    <div class="range">
+        Minimo possibile: 40<br>
+        Massimo possibile: 860
+    </div>
+`;
 
     document.getElementById("livello").innerHTML =
         livello;
@@ -107,26 +119,44 @@ async function scaricaPDF() {
 
     const { jsPDF } = window.jspdf;
 
-    const doc = new jsPDF();
+    const area =
+        document.getElementById("risultato");
 
-    doc.setFontSize(22);
+    const canvas =
+        await html2canvas(area);
 
-    doc.text(
-        "Risultato Impronta Ecologica",
-        20,
-        20
+    const imgData =
+        canvas.toDataURL("image/png");
+
+    const pdf =
+        new jsPDF("p", "mm", "a4");
+
+    const pdfWidth =
+        pdf.internal.pageSize.getWidth();
+
+    const imgWidth = pdfWidth - 20;
+
+    const imgHeight =
+        canvas.height * imgWidth / canvas.width;
+
+    pdf.addImage(
+        imgData,
+        "PNG",
+        10,
+        10,
+        imgWidth,
+        imgHeight
     );
 
-    let totale =
-        document.getElementById("totale").innerText;
+    let nome =
+        document.getElementById("nome").value;
 
-    doc.setFontSize(16);
+    if(nome.trim() === "") {
+        nome = "utente";
+    }
 
-    doc.text(
-        `Punteggio totale: ${totale}`,
-        20,
-        40
+    pdf.save(
+        `impronta_ecologica_${nome}.pdf`
     );
 
-    doc.save("impronta_ecologica.pdf");
 }

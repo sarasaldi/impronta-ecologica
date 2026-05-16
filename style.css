@@ -193,3 +193,41 @@ footer {
     border-radius: 10px;
     margin: 10px 0;
 }
+
+.nome-box {
+
+    margin: 40px auto 20px auto;
+    width: 65%;
+    text-align: left;
+
+}
+
+.nome-box label {
+
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 18px;
+
+}
+
+.nome-box input {
+
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-family: inherit;
+    box-sizing: border-box;
+
+}
+
+.range {
+
+    margin-top: 15px;
+    font-size: 16px;
+    color: #666;
+    line-height: 1.5;
+
+}
