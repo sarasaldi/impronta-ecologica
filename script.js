@@ -119,144 +119,143 @@ async function scaricaPDF() {
 
     const { jsPDF } = window.jspdf;
 
-    const area =
-        document.getElementById("risultato");
+    const pdf = new jsPDF("p", "mm", "a4");
 
-    // Rendering migliore
+    // ===== DATI =====
 
-    const canvas = await html2canvas(area, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#f8f4e8"
-    });
+    const nome =
+        document.getElementById("nome").value || "Utente";
 
-    const imgData =
-        canvas.toDataURL("image/png");
+    const totale =
+        document.getElementById("totale").innerText;
 
-    const pdf =
-        new jsPDF("p", "mm", "a4");
+    const livello =
+        document.getElementById("livello").innerText;
 
-    const pdfWidth = 210;
-    const pdfHeight = 297;
-
-    const margin = 10;
-
-    const usableWidth =
-        pdfWidth - margin * 2;
-
-    const imgHeight =
-        canvas.height * usableWidth / canvas.width;
-
-    let heightLeft = imgHeight;
-
-    let position = 0;
+    const dettagli =
+        document.querySelectorAll("#dettagli p");
 
     // ===== LOGO =====
 
-    const logo =
-        document.querySelector(".logo");
+    const logo = new Image();
+    logo.src = "logo.png";
 
-    if (logo) {
+    await new Promise(resolve => {
+        logo.onload = resolve;
+    });
 
-        const logoCanvas =
-            document.createElement("canvas");
+    pdf.addImage(
+        logo,
+        "PNG",
+        15,
+        10,
+        18,
+        18
+    );
 
-        logoCanvas.width = logo.width;
-        logoCanvas.height = logo.height;
-
-        const ctx =
-            logoCanvas.getContext("2d");
-
-        ctx.drawImage(
-            logo,
-            0,
-            0
-        );
-
-        const logoData =
-            logoCanvas.toDataURL("image/png");
-
-        pdf.addImage(
-            logoData,
-            "PNG",
-            15,
-            10,
-            20,
-            20
-        );
-    }
-
-    // ===== TITOLO =====
+    // ===== HEADER =====
 
     pdf.setFont("helvetica", "bold");
 
-    pdf.setFontSize(20);
+    pdf.setFontSize(22);
 
     pdf.text(
         "Impronta Ecologica",
-        45,
+        40,
         20
     );
 
-    // ===== DATA =====
-
     pdf.setFont("helvetica", "normal");
 
-    pdf.setFontSize(11);
+    pdf.setFontSize(12);
 
     const oggi = new Date();
 
     pdf.text(
         oggi.toLocaleDateString("it-IT"),
-        170,
+        160,
         20
     );
 
-    // ===== CONTENUTO =====
+    // ===== INFO =====
 
     let y = 40;
 
-    pdf.addImage(
-        imgData,
-        "PNG",
-        margin,
-        y,
-        usableWidth,
-        imgHeight
+    pdf.setFontSize(16);
+
+    pdf.text(
+        `Nome: ${nome}`,
+        15,
+        y
     );
 
-    heightLeft -= (pdfHeight - y);
+    y += 10;
 
-    // ===== PAGINE SUCCESSIVE =====
+    pdf.text(
+        `Punteggio totale: ${totale}`,
+        15,
+        y
+    );
 
-    while (heightLeft > 0) {
+    y += 10;
 
-        position =
-            heightLeft - imgHeight + y;
+    pdf.text(
+        livello,
+        15,
+        y
+    );
 
-        pdf.addPage();
+    // ===== GRAFICO =====
 
-        pdf.addImage(
-            imgData,
-            "PNG",
-            margin,
-            position,
-            usableWidth,
-            imgHeight
+    const chart =
+        document.getElementById("grafico");
+
+    const chartImage =
+        chart.toDataURL("image/png");
+
+    y += 15;
+
+    pdf.addImage(
+        chartImage,
+        "PNG",
+        55,
+        y,
+        100,
+        100
+    );
+
+    y += 115;
+
+    // ===== DETTAGLI =====
+
+    pdf.setFontSize(12);
+
+    dettagli.forEach(dettaglio => {
+
+        const testo =
+            dettaglio.innerText;
+
+        // cambio pagina automatico
+
+        if (y > 270) {
+
+            pdf.addPage();
+
+            y = 20;
+
+        }
+
+        pdf.text(
+            testo,
+            15,
+            y
         );
 
-        heightLeft -= pdfHeight;
+        y += 10;
 
-    }
+    });
 
-    // ===== NOME FILE =====
-
-    let nome =
-        document.getElementById("nome").value;
-
-    if(nome.trim() === "") {
-        nome = "utente";
-    }
+    // ===== SALVA =====
 
     pdf.save(
         `impronta_ecologica_${nome}.pdf`
