@@ -1,57 +1,172 @@
+/* ===== STILE GENERALE ===== */
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f7f6;
-    text-align: center;
+    font-family: Avenir, "Avenir Next", "Segoe UI", sans-serif;
+    background: #f8f4e8;
     margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #333;
 }
+
+/* ===== HEADER ===== */
 
 header {
-    background: #2c7a7b;
+    background: #c89b3c;
     color: white;
-    padding: 20px;
+    padding: 30px 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
+header h1 {
+    margin: 10px 0;
+    font-size: 42px;
+    font-weight: 600;
+}
+
+header p {
+    font-size: 18px;
+    max-width: 800px;
+    margin: auto;
+    line-height: 1.5;
+}
+
+/* ===== LOGO ===== */
+
 .logo {
-    width: 100px;
+    width: 110px;
     margin-bottom: 10px;
 }
 
+/* ===== DOMANDE ===== */
+
 .question {
     background: white;
-    margin: 20px auto;
-    padding: 15px;
-    width: 60%;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin: 25px auto;
+    padding: 25px;
+    width: 65%;
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    text-align: left;
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
 }
+
+.question:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+.question p {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+/* ===== LABEL ===== */
 
 label {
     display: block;
-    margin: 5px;
+    margin: 12px 0;
+    font-size: 17px;
+    cursor: pointer;
+    transition: color 0.2s;
 }
 
+label:hover {
+    color: #c89b3c;
+}
+
+/* ===== RADIO BUTTON ===== */
+
+input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+}
+
+/* ===== BOTTONE ===== */
+
 button {
-    padding: 12px 25px;
-    font-size: 16px;
-    background: #2c7a7b;
-    color: white;
+    margin: 30px 0 50px 0;
+    padding: 15px 35px;
+    font-size: 18px;
+    font-weight: 600;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
+    background: #c89b3c;
+    color: white;
     cursor: pointer;
+    transition: background 0.2s,
+                transform 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 button:hover {
-    background: #285e61;
+    background: #b5892f;
+    transform: scale(1.03);
 }
+
+/* ===== RISULTATO ===== */
 
 #risultato {
     background: white;
-    margin: 30px auto;
-    padding: 20px;
-    width: 60%;
-    border-radius: 10px;
+    width: 65%;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    text-align: left;
+    line-height: 1.7;
 }
+
+#risultato h2 {
+    color: #c89b3c;
+    margin-top: 0;
+}
+
+#risultato h3 {
+    margin-top: 25px;
+}
+
+/* ===== FOOTER ===== */
+
+footer {
+    margin-top: 60px;
+    padding: 20px;
+    background: #e9dcc0;
+    color: #555;
+    font-size: 15px;
+}
+
+/* ===== CLASSI UTILI ===== */
 
 .hidden {
     display: none;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+
+    header h1 {
+        font-size: 30px;
+    }
+
+    header p {
+        font-size: 16px;
+    }
+
+    .question {
+        width: 90%;
+        padding: 20px;
+    }
+
+    #risultato {
+        width: 90%;
+    }
+
+    button {
+        width: 85%;
+    }
+
 }
